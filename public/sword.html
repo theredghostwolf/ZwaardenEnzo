@@ -1,27 +1,42 @@
 <div class="swordView">
-  <div class="info">
-    <div class="name">
-      Name: {{sword.name}}
+  <div class="row info">
+    <div class="col-md-8 info">
+      <div class="name">
+        Name: {{sword.name}}
+      </div>
+      <div class="length">
+        Length: {{sword.length}}
+      </div>
+      <div class="weight">
+        Weight: {{sword.weight}}
+      </div>
+      <div class="metals">
+        Metals:
+        <ul>
+          <li ng-repeat="m in sword.metals"> {{m}} </li>
+        </ul>
+      </div>
     </div>
-    <div class="length">
-      Length: {{sword.length}}
-    </div>
-    <div class="weight">
-      Weight: {{sword.weight}}
-    </div>
-    <div class="metals">
-      Metals:
-      <ul>
-        <li ng-repeat="m in sword.metals"> {{m}} </li>
-      </ul>
+    <div class="col-md-4 tumbnail">
+      <img src="{{sword.altImg}}" alt="" />
     </div>
   </div>
-  <div class="history">
-    History:
-    {{sword.history}}
+
+  <div class="row history">
+    <div class="row">
+      <div class="col-md-12 history-header">
+        <h2>History</h2>
+      </div>
+    </div>
+  <div class="row">
+    <div class="col-md-12 history-content">
+        {{sword.history}}
+    </div>
+  </div>
+
   </div>
   <div class="facts">
-    Facts: 
+    Facts:
     <div class="" ng-repeat="f in sword.facts">
       {{f}}
     </div>

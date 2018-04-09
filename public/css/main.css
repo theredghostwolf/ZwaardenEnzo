@@ -1,25 +1,96 @@
+body {
+  background-color: #bad4ff
+}
+
 .header {
   text-align: center;
+  width: 100%;
+  background-color: #74a8fc;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #5381cc;
+  border-radius: 10px;
+  padding-bottom: 1px;
+}
+
+.header > a > .btn {
+  float: right;
+  margin-right: 15px;
+}
+
+.header > .btn {
+  float: right;
 }
 
 .sword {
   border-radius: 5px;
   border: 1px solid black;
+  height: 100px;
 }
 
-.nav {
+.catalog > .nav {
   border-radius: 5px;
   border: 1px solid black;
 }
 
-.nav > div {
+.catalog > .nav > div {
   width: 100%;
 }
 
-.nav > .range {
+.catalog > .nav > .range {
   text-align: center;
 }
 
-.nav > div > .textinput {
+.catalog > .nav > div > .textinput {
   width: 75%;
+}
+
+.catalog > .content {
+  height: 100%;
+}
+
+.splashImg {
+  height: auto;
+  width: auto;
+  max-width: 100px;
+  max-height:100px;
+
+  float: right;
+}
+
+.catalog > .content > .sword {
+  width: 100%;
+}
+
+.catalog > .content > div {
+  width: 100%;
+}
+
+.login {
+  text-align: center;
+}
+
+.login > div {
+  margin-top: 10px;
+}
+
+.swordView {
+
+}
+
+.swordView > .info {
+  border-radius: 5px;
+  border-bottom: 1px solid black;
+}
+
+.swordView > .history {
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+.swordView > .history > .row {
+  width: 100%;
+}
+
+.swordView > .history > .row > .history-header {
+ text-align: center;
 }

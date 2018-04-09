@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row catalog">
   <div class="col-md-2 nav">
     <div class="range">
       <input type="text" name="name" ng-model="selectedName" class="textinput" placeholder="name">
@@ -27,28 +27,33 @@
   <div class="col-md-10 content">
     <div class="sword" ng-repeat="sword in swords">
       <a href="/sword/{{sword._id}}">
+        <div class="row">
+          <div class="col-md-5">
+            <div class="">
+              Name: {{sword.name}}
+            </div>
+            <div class="">
+              Length: {{sword.length}}
+            </div>
+            <div class="">
+              Weight: {{sword.weight}}
+            </div>
+            <div class="">
+              {{sword.history}}
+            </div>
+          </div>
 
-    <div class="">
-      Name: {{sword.name}}
+        </a>
+        <div class="col-md-2">
+          <button type="button" name="button" class="btn btn-danger" ng-click="remove(sword._id, sword.name)" ng-show="USER.loggedIn">remove</button>
+          <a href="/adminPanel/{{sword._id}}"> <button type="button" name="button" class="btn btn-warning" ng-show="USER.loggedIn">edit</button></a>
+        </div>
+        <div class="col-md-5">
+          <div class="">
+            <img class="img-thumbnail splashImg" src="{{sword.altImg}}" alt="" />
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="">
-      Length: {{sword.length}}
-    </div>
-    <div class="">
-      Weight: {{sword.weight}}
-    </div>
-    <div class="">
-      {{sword.history}}
-    </div>
-    <div class="">
-      <img src="{{sword.altImg}}" alt="" />
-    </div>
-    </a>
-    <div class="">
-        <button type="button" name="button" class="btn btn-danger" ng-click="remove(sword._id, sword.name)" ng-show="USER.loggedIn">remove</button>
-      <a href="/adminPanel/{{sword._id}}"> <button type="button" name="button" class="btn btn-warning" ng-show="USER.loggedIn">edit</button></a>
-    </div>
-
   </div>
-</div>
 </div>

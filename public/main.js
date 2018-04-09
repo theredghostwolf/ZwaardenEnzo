@@ -1,5 +1,10 @@
 angular.module("main",[]).controller('mainController', function($scope, $http, $window) {
 
+$scope.logout = function () {
+  $window.sessionStorage.removeItem("user");
+  $scope.USER.loggedIn = false;
+}
+
 if ($window.sessionStorage.user) {
   $scope.USER = JSON.parse($window.sessionStorage.user);
 } else {
