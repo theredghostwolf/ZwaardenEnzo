@@ -1,0 +1,46 @@
+<div class="">
+  <div class="info">
+    <div class="">
+      <input type="text" name="name" placeholder="name" ng-model="name">
+    </div>
+    <div class="">
+      <input type="number" name="name" ng-model="length" placeholder="length">
+    </div>
+    <div class="">
+      <input type="number" name="name" ng-model="weight" placeholder="Weight" step="0.1">
+    </div>
+    <div class="">
+      <input type="file" id="file" ng-model="img">
+    </div>
+    <div class="">
+      <input type="text" name="name" ng-model="imgLink" placeholder="External IMG link">
+    </div>
+    <div class="">
+      <select class="" ng-model="metal">
+        <option value="">Metal type</option>
+        <option ng-repeat="m in dataMetals" value="{{m.name}}">{{m.name}}</option>
+      </select>
+      <button type="button" name="button" class="btn btn-dark" ng-click="addMetal()">add</button>
+      <div class="" ng-repeat="m in metals">
+        {{m}} <button type="button" name="button" class="btn btn-dark" ng-click="removeMetal(m)">remove</button>
+      </div>
+    </div>
+  </div>
+  <div class="history">
+    <textarea ng-model="history" placeholder="history"></textarea>
+  </div>
+  <div class="facts">
+    <div class="">
+      <textarea ng-model=fact placeholder="fact"></textarea>
+      <button type="button" name="button" class="btn btn-dark" ng-click="addFact()">add</button>
+    </div>
+    <div class="">
+      <div class="" ng-repeat="f in facts">
+        {{f}} <button type="button" name="button" class="btn btn-dark" ng-click="removeFact(f)">remove</button>
+      </div>
+    </div>
+  </div>
+  <div class="">
+    <button type="button" name="button" class="btn btn-dark" ng-click="submit()">Submit</button>
+  </div>
+</div>

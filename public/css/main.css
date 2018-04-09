@@ -1,0 +1,25 @@
+.header {
+  text-align: center;
+}
+
+.sword {
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+.nav {
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+.nav > div {
+  width: 100%;
+}
+
+.nav > .range {
+  text-align: center;
+}
+
+.nav > div > .textinput {
+  width: 75%;
+}

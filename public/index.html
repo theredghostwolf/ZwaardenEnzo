@@ -1,0 +1,40 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+
+    <title>Zwaarden Enzo</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css"> <!-- custom styles -->
+
+    <!-- JS -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+    <script src="libs/angular/angular.js"></script><!-- load angular -->
+    <script src="libs/angular-route/angular-route.js"></script>
+
+    <!-- ANGULAR CUSTOM -->
+    <script src="routes.js"></script>
+    <script scr="admin.js"></script>
+    <script src="main.js"></script>
+    <script src="core.js"></script>
+
+</head>
+<body ng-app="ZwaardenEnz">
+  <div class="container">
+    <div class="row" ng-controller="mainController">
+      <div class="col-md-12 header">
+      <a href="/">  logo </a>  <a href="/login">  <button type="button" name="button" class="btn btn-dark" ng-show="! USER.loggedIn">login</button></a> <a href="/adminPanel/new"><button type="button" name="button" class="btn btn-dark" ng-show="USER.loggedIn">New Sword</button></a>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+            <div class="col-md-12 view" ng-view> </div>
+      </div>
+    </div>
+  </div>
+</body>

@@ -1,0 +1,29 @@
+<div class="swordView">
+  <div class="info">
+    <div class="name">
+      Name: {{sword.name}}
+    </div>
+    <div class="length">
+      Length: {{sword.length}}
+    </div>
+    <div class="weight">
+      Weight: {{sword.weight}}
+    </div>
+    <div class="metals">
+      Metals:
+      <ul>
+        <li ng-repeat="m in sword.metals"> {{m}} </li>
+      </ul>
+    </div>
+  </div>
+  <div class="history">
+    History:
+    {{sword.history}}
+  </div>
+  <div class="facts">
+    Facts: 
+    <div class="" ng-repeat="f in sword.facts">
+      {{f}}
+    </div>
+  </div>
+</div>
