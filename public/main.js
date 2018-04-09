@@ -1,4 +1,20 @@
-angular.module("main",[]).controller('mainController', function($scope, $http, $window) {
+angular.module("nav",[]).controller("navController", function ($scope, $window) {
+  $scope.logout = function () {
+    $window.sessionStorage.removeItem("user");
+    $scope.USER.loggedIn = false;
+  }
+
+  if ($window.sessionStorage.user) {
+    $scope.USER = JSON.parse($window.sessionStorage.user);
+  } else {
+    $scope.USER = {
+      loggedIn : false
+    };
+  }
+
+})
+
+angular.module("main",[]).controller('mainController', function($scope, $http, $window, $routeParams) {
 
 $scope.logout = function () {
   $window.sessionStorage.removeItem("user");
@@ -12,21 +28,6 @@ if ($window.sessionStorage.user) {
     loggedIn : false
   };
 }
-
-$scope.remove = function (id, name) {
-  var x = confirm("do you want to delete: " + name);
-  if (x) {
-  $http.delete("/api/sword/" + id).then (function (data) {
-    alert("succes");
-    $scope.calibrate();
-  }, function (err) {
-    console.log(err);
-    alert("An error occurred")
-  })
-  }
-}
-
-$scope.formData = {};
 
 function errorCallback (err) {
   Console.log("Error: " + err);
@@ -42,7 +43,7 @@ function findSwords (search, callb) {
 $scope.calibrate = function ( ) {
 findSwords({}, function (data) {
 
-    $scope.swords = data.data;
+  $scope.swords = data.data;
 
   var shortest = 1000;
   var longest = 0;
@@ -81,28 +82,20 @@ findSwords({}, function (data) {
 
   $scope.selectedMaxWeight = heaviest;
 
+  if ($routeParams != {}) {
+  findSwords($routeParams, function (data) {
+    $scope.swords = data.data;
+    })
+  }
 });
 }
+
 $http.get("/api/metal").then(function (data) {
   $scope.metals = data.data;
 }, errorCallback );
 
-$scope.search = function () {
-  searchObj = {
-    minLength : $scope.selectedMinLength,
-    maxLength : $scope.selectedMaxLength
-  };
-  if ($scope.selectedName != "") {
-    searchObj.name = $scope.selectedName;
-  }
-
-  findSwords(searchObj, function (data) {
-    console.log(data.data)
-    $scope.swords = data.data;
-  })
-}
-
 $scope.calibrate();
+
 
 });
 
@@ -129,7 +122,21 @@ $http.get("/api/metal").then(function (data) {
 });
 
 $scope.addFact = function () {
-  $scope.facts.push($scope.fact)
+  var included = false;
+
+  if ($scope.fact == "") {
+    included  = true;
+  }
+
+  for (var i = 0; i < $scope.facts.length; i++) {
+    if ($scope.fact == $scope.facts[i]) {
+      included = true;
+    }
+  }
+
+  if (!included) {
+    $scope.facts.push($scope.fact)
+  }
 }
 
 $scope.removeFact = function (f) {
@@ -215,7 +222,15 @@ $scope.submit = function () {
 
 });
 
-angular.module("swordView",[]).controller('swordViewController', function($routeParams,$scope, $http) {
+angular.module("swordView",[]).controller('swordViewController', function($routeParams,$scope, $http, $window) {
+
+  if ($window.sessionStorage.user) {
+    $scope.USER = JSON.parse($window.sessionStorage.user);
+  } else {
+    $scope.USER = {
+      loggedIn : false
+    };
+  }
 
   $http.get("/api/sword/" + $routeParams.id).then (function (data) {
     $scope.sword = data.data;
@@ -223,6 +238,19 @@ angular.module("swordView",[]).controller('swordViewController', function($route
   }, function (err) {
     console.log("Error: " + err)
   })
+
+  $scope.remove = function (id, name) {
+    var x = confirm("do you want to delete: " + name);
+    if (x) {
+    $http.delete("/api/sword/" + id).then (function (data) {
+      alert("succes");
+      $window.location.href = "/"
+    }, function (err) {
+      console.log(err);
+      alert("An error occurred")
+    })
+    }
+  }
 });
 
 angular.module("loginView",[]).controller("loginController", function ($scope, $http, $window) {

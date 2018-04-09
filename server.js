@@ -32,16 +32,27 @@
 
     app.get("/api/sword", function (req, res) {
 
+        var q = {
+        //length: {$lt : req.query.mnL , $gt: req.query.mxL},
+        //weight: {$lt : req.query.mnW, $gt: req.query.mxW},
+        name: req.query.name
+        }
+      
+        if (req.query.name == undefined) {
+          q = {};
+        }
 
-      Sword.find({}, function (err, swords) {
+      Sword.find(q, function (err, swords) {
         if (err) {
           res.send(err);
         } else {
+
           res.json(swords)
         }
       })
 
     });
+
 
     app.post("/api/sword", function (req,res) {
       Sword.create(req.body, function(err, result) {

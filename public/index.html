@@ -25,11 +25,11 @@
 </head>
 <body ng-app="ZwaardenEnz">
   <div class="container">
-    <div class="row" ng-controller="mainController">
+    <div class="row" ng-controller="navController">
       <div class="col-md-12 header">
-      <a href="/">  logo </a>
+      <a href="/">  <img src="/IMG/logo.png" alt="" class="logoImg"/> </a>
         <button type="button" name="button" class="btn btn-dark" ng-show="USER.loggedIn" ng-click="logout()">logout</button>
-        <a href="/login">   <button type="button" name="button" class="btn btn-dark" ng-show="! USER.loggedIn">login</button></a> 
+        <a href="/login">   <button type="button" name="button" class="btn btn-dark" ng-show="! USER.loggedIn">login</button></a>
         <a href="/adminPanel/new"><button type="button" name="button" class="btn btn-dark" ng-show="USER.loggedIn">New Sword</button></a>
       </div>
 

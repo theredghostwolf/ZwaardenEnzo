@@ -2,6 +2,13 @@ body {
   background-color: #bad4ff
 }
 
+.header > a > .logoImg {
+  height: auto;
+  width: auto;
+  max-width: 300px;
+  max-height: 200px;
+}
+
 .header {
   text-align: center;
   width: 100%;
@@ -23,13 +30,13 @@ body {
 
 .sword {
   border-radius: 5px;
-  border: 1px solid black;
+  border: 1px solid #5381cc;
   height: 100px;
 }
 
 .catalog > .nav {
   border-radius: 5px;
-  border: 1px solid black;
+  border: 1px solid #5381cc;
 }
 
 .catalog > .nav > div {
@@ -55,6 +62,7 @@ body {
   max-height:100px;
 
   float: right;
+
 }
 
 .catalog > .content > .sword {
@@ -79,12 +87,12 @@ body {
 
 .swordView > .info {
   border-radius: 5px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #5381cc;
 }
 
 .swordView > .history {
   border-radius: 5px;
-  border: 1px solid black;
+  border-bottom: 1px solid #5381cc;
 }
 
 .swordView > .history > .row {
@@ -93,4 +101,20 @@ body {
 
 .swordView > .history > .row > .history-header {
  text-align: center;
+}
+
+.swordView > .info > .thumbnail > img {
+  height: auto;
+  width: auto;
+  max-width: 350px;
+  max-height:200px;
+}
+
+.facts > h2 {
+  text-align: center;
+}
+
+.swordView > .facts {
+  border-bottom: 1px solid #5381cc;
+  margin-bottom: 5px;
 }

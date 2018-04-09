@@ -21,14 +21,14 @@
       <input type="checkbox" name="name" value="">  {{metal.name}}
     </div>
     <div class="range">
-      <button type="button" name="button" class="btn btn-dark" ng-click="search()">search</button>
+      <a href="/{{selectedName}}/{{selectedMinLength}}/{{selectedMaxLength}}/{{selectedMinWeight}}/{{selectedMaxWeight}}"><button type="button" name="button" class="btn btn-dark" >search</button></a>
     </div>
   </div>
   <div class="col-md-10 content">
-    <div class="sword" ng-repeat="sword in swords">
+    <div class="sword" ng-repeat="sword in swords track by $index">
       <a href="/sword/{{sword._id}}">
         <div class="row">
-          <div class="col-md-5">
+          <div class="col-md-8">
             <div class="">
               Name: {{sword.name}}
             </div>
@@ -43,17 +43,15 @@
             </div>
           </div>
 
-        </a>
-        <div class="col-md-2">
-          <button type="button" name="button" class="btn btn-danger" ng-click="remove(sword._id, sword.name)" ng-show="USER.loggedIn">remove</button>
-          <a href="/adminPanel/{{sword._id}}"> <button type="button" name="button" class="btn btn-warning" ng-show="USER.loggedIn">edit</button></a>
-        </div>
-        <div class="col-md-5">
+
+        <div class="col-md-4">
           <div class="">
             <img class="img-thumbnail splashImg" src="{{sword.altImg}}" alt="" />
           </div>
         </div>
+
       </div>
+        </a>
     </div>
   </div>
 </div>
