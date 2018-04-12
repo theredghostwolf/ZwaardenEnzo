@@ -1,0 +1,16 @@
+<div class="adminMetal">
+
+
+<div class="metalList">
+  <h2>Metals</h2>
+  <ul>
+    <li ng-repeat="metal in metals">{{metal.name}} <button type="button" name="button" class="btn btn-danger" ng-click="removeMetal(metal._id)">remove</button></li>
+  </ul>
+  <button type="button" name="button" class="btn btn-dark" ng-click="getMetals()">refresh</button>
+</div>
+
+<div class="">
+  <input type="text" name="name" ng-model="newMetal" placeholder="new metal">
+  <button type="button" name="button" class="btn btn-dark" ng-click="submit()">Create</button>
+</div>
+</div>

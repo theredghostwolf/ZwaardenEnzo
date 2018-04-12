@@ -118,3 +118,10 @@ body {
   border-bottom: 1px solid #5381cc;
   margin-bottom: 5px;
 }
+
+.adminMetal > .metalList {
+  border-radius: 5px;
+  border-bottom: 1px solid #5381cc;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+}

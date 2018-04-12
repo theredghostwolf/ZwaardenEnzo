@@ -30,6 +30,11 @@ $routeProvider
       controller: "loginController"
     })
 
+    .when('/metal', {
+      templateUrl: "metal.html",
+      controller: "newMetalController"
+    })
+
 $locationProvider.html5Mode(true);
 
 }]);

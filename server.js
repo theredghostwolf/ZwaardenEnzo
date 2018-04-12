@@ -12,8 +12,11 @@
     var morgan = require('morgan');             // log requests to the console (express4)
     var bodyParser = require('body-parser');    // pull information from HTML POST (express4)
     var methodOverride = require('method-override'); // simulate DELETE and PUT (express4)
+    var bcrypt = require("bcrypt");
 
     // configuration =================
+
+    const saltRounds = 10;
 
     mongoose.connect("mongodb://localhost:27017/zwaarden");     // connect to mongoDB database on modulus.io
 
@@ -30,6 +33,30 @@
 
     // routes
 
+    verifyUser = function (user, callb) {
+
+      Admin.findOne({name: user.name}, function (err, adm) {
+        bcrypt.compare(user.password,adm.password, function (err, res) {
+          if (err) {
+            console.log(err);
+            callb(false)
+          } else {
+            callb(res)
+          }
+        })
+      })
+    }
+
+    function rot13(str) {
+      var input     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+      var output    = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm';
+      var index     = x => input.indexOf(x);
+      var translate = x => index(x) > -1 ? output[index(x)] : x;
+      return str.split('').map(translate).join('');
+    }
+
+
+
     app.get("/api/sword", function (req, res) {
 
         var q = {
@@ -37,7 +64,7 @@
         //weight: {$lt : req.query.mnW, $gt: req.query.mxW},
         name: req.query.name
         }
-      
+
         if (req.query.name == undefined) {
           q = {};
         }
@@ -109,28 +136,44 @@
   });
 
   app.post("/api/metal", function (req, res) {
+    console.log(req)
     Metal.create(req.body, function (err, result) {
       if (err) {
         res.send(err);
       } else {
-        res.send(result);
+        res.json(result);
+      }
+    })
+  })
+
+  app.delete('/api/metal/:metal_id', function (req, res) {
+    user = req.query;
+    user.password = rot13(user.password)
+    verifyUser(user, function (legit) {
+      if (legit) {
+        Metal.remove({_id: req.params.metal_id}, function (err, metal) {
+          if (err) {
+            res.send(err);
+          } else {
+            res.json(metal);
+          }
+        })
+      } else {
+        res.status(400);
+        res.send("verifycation failed")
       }
     })
   })
 
   app.post("/api/admin/login", function (req, res) {
     var user = req.body;
-    Admin.findOne({name: user.name}, function (err, result) {
-      if (err) {
-        res.send(err);
-      } else {
-        //this will have to be hashed and compare hashes, preferably bcrypt
-        if (user.password == result.password) {
-          res.send({succes: true});
+    verifyUser(user, function (r) {
+        if (r) {
+          p = rot13(user.password)
+          res.send({succes: r, password: p});
         } else {
-          res.send({succes: false});
+          res.send({succes: r, password: "trolled"})
         }
-      }
     })
 
   })

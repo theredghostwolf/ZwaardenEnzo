@@ -1,4 +1,6 @@
+
 angular.module("nav",[]).controller("navController", function ($scope, $window) {
+
   $scope.logout = function () {
     $window.sessionStorage.removeItem("user");
     $scope.USER.loggedIn = false;
@@ -100,6 +102,18 @@ $scope.calibrate();
 });
 
 angular.module("adm",[]).controller('adminController', function($routeParams, $scope, $http, $window) {
+
+  if ($window.sessionStorage.user) {
+    $scope.USER = JSON.parse($window.sessionStorage.user);
+  } else {
+    $scope.USER = {
+      loggedIn : false
+    };
+  }
+
+  if (! $scope.USER.loggedIn) {
+    $window.location.href = "/"
+  }
 
 if ($routeParams.id != "new") {
   $http.get("/api/sword/" + $routeParams.id).then (function (data){
@@ -264,7 +278,7 @@ angular.module("loginView",[]).controller("loginController", function ($scope, $
       if (data.data.succes) {
       //set user as logged in
       //and redirect
-      $window.sessionStorage.setItem("user", JSON.stringify({loggedIn: true, name: user.name}))
+      $window.sessionStorage.setItem("user", JSON.stringify({loggedIn: true, name: user.name, password: data.data.password}))
       $window.location.href = "/";
       console.log("success")
       } else {
@@ -274,4 +288,55 @@ angular.module("loginView",[]).controller("loginController", function ($scope, $
       alert("An Error occred, you cannot login at this time")
     })
   }
+})
+
+angular.module("newMetal",[]).controller("newMetalController", function ($http, $scope, $window) {
+
+  if ($window.sessionStorage.user) {
+    $scope.USER = JSON.parse($window.sessionStorage.user);
+  } else {
+    $scope.USER = {
+      loggedIn : false
+    };
+  }
+
+  if (! $scope.USER.loggedIn) {
+    $window.location.href = "/"
+  }
+
+  $scope.getMetals = function () {
+    $http.get('/api/metal').then(function (data) {
+      $scope.metals = data.data;
+    }, function (err) {
+      console.log("Error:" + err);
+    })
+  }
+
+  $scope.submit = function () {
+    $http.post("/api/metal", {name: $scope.newMetal}
+    ).then(function (data) {
+      alert("success")
+      $scope.getMetals();
+    }, function(err) {
+      console.log(err)
+      alert("an error occured")
+    })
+  }
+
+  $scope.removeMetal = function (id) {
+    var c = confirm ("are you sure");
+    if (c) {
+    $http.delete("/api/metal/" + id,  {
+        params: $scope.USER
+      }).then(function (data) {
+      alert("success")
+      $scope.getMetals();
+    }, function (err) {
+      alert("an error occurred please try again at a later time..")
+    })
+  }
+}
+
+  $scope.getMetals();
+
 })
