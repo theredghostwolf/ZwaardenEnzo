@@ -125,3 +125,57 @@ body {
   margin-bottom: 5px;
   padding-bottom: 5px;
 }
+
+.newSword {
+
+}
+
+.newSword > .info  > div {
+  margin-bottom: 5px;
+}
+
+.newSword > .info  > h2 {
+
+}
+
+.newSword > .info {
+  border-radius: 10px;
+  border-bottom:  1px solid #5381cc;
+}
+
+.newSword > .history > textarea {
+  width: 500px;
+  height: 200px;
+}
+
+.newSword > .history {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  border-bottom: 1px solid #5381cc;
+  padding-bottom: 10px;
+}
+
+.newSword > .facts > div > div > textarea {
+  width: 500px;
+  height: 100px;
+  margin-bottom: 5px;
+}
+
+.newSword > .facts > .add {
+  margin-bottom: 5px;
+  border-radius: 5px;
+  border-bottom: 1px solid #5381cc;
+  padding-bottom: 5px;
+}
+
+.newSword > .facts > .existing {
+
+}
+
+.newSword > .facts {
+  margin-bottom: 5px;
+  border-radius: 5px;
+  border-bottom: 1px solid #5381cc;
+  padding-bottom: 5px;
+}

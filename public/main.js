@@ -192,6 +192,8 @@ $scope.removeMetal = function (m) {
 }
 
 $scope.submit = function () {
+  var sure = confirm("Are you sure?")
+  if (sure) {
   /*
   console.log($scope.img)
   var f = document.getElementById('file').files[0],
@@ -237,7 +239,7 @@ $scope.submit = function () {
   })
 }
 }
-
+}
 });
 
 angular.module("swordView",[]).controller('swordViewController', function($routeParams,$scope, $http, $window) {

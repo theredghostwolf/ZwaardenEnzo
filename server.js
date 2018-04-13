@@ -108,7 +108,7 @@
     app.get("/api/sword/:sword_id", function (req,res) {
       Sword.findOne({_id : req.params.sword_id}, function (err, sword) {
         if (err) {
-          console.log(err);
+        
           res.send(err);
         } else {
           res.json(sword);
