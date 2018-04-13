@@ -47,6 +47,11 @@
       })
     }
 
+    function sendErrorResponse (res) {
+      res.status(400);
+      res.send("verifycation failed")
+    }
+
     function rot13(str) {
       var input     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
       var output    = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm';
@@ -82,13 +87,22 @@
 
 
     app.post("/api/sword", function (req,res) {
-      Sword.create(req.body, function(err, result) {
-        if (err) {
-          res.send(err);
+      var user = req.body.user;
+      user.password = rot13(password);
+      verifyUser(user, function (legit) {
+        if (legit) {
+          Sword.create(req.body.sword, function(err, result) {
+            if (err) {
+              res.send(err);
+            } else {
+              res.send(result);
+            }
+          })
         } else {
-          res.send(result);
+          sendErrorResponse(res);
         }
       })
+
     });
 
     app.get("/api/sword/:sword_id", function (req,res) {
@@ -103,26 +117,42 @@
     });
 
     app.put ("/api/sword/:sword_id", function (req,res) {
-
-          Sword.update({_id: req.params.sword_id}, req.body, function (err, result) {
+      var user = req.body.user;
+      user.password = rot13(user.password);
+      verifyUser(user, function (legit) {
+        if (legit) {
+          Sword.update({_id: req.params.sword_id}, req.body.sword, function (err, result) {
             if (err) {
               res.send(err);
             } else {
               res.json(result);
             }
           })
+        } else {
+          sendErrorResponse(res)
+        }
+      })
+
     });
 
     app.delete("/api/sword/:sword_id", function (req, res) {
-      Sword.remove({
-           _id : req.params.sword_id
-       }, function(err, sword) {
-           if (err) {
-               res.send(err);
-            } else {
-              res.json(sword);
-            }
-    });
+      var user = req.query;
+      user.password = rot13(user.password)
+      verifyUser(user, function (legit) {
+        if (legit) {
+          Sword.remove({
+               _id : req.params.sword_id
+           }, function(err, sword) {
+               if (err) {
+                   res.send(err);
+                } else {
+                  res.json(sword);
+                }
+        });
+        } else {
+          sendErrorResponse(res);
+        }
+      })
   });
 
   app.get("/api/metal", function (req,res) {
@@ -136,14 +166,21 @@
   });
 
   app.post("/api/metal", function (req, res) {
-    console.log(req)
-    Metal.create(req.body, function (err, result) {
-      if (err) {
-        res.send(err);
-      } else {
-        res.json(result);
-      }
-    })
+  user = req.body.user;
+  user.password = rot13(user.password);
+  verifyUser(user, function(legit) {
+    if (legit) {
+      Metal.create({name: req.body.name}, function (err, result) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.json(result);
+        }
+      })
+    } else {
+      sendErrorResponse(res)
+    }
+  })
   })
 
   app.delete('/api/metal/:metal_id', function (req, res) {
@@ -159,8 +196,7 @@
           }
         })
       } else {
-        res.status(400);
-        res.send("verifycation failed")
+        sendErrorResponse(res);
       }
     })
   })

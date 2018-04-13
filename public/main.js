@@ -3,7 +3,11 @@ angular.module("nav",[]).controller("navController", function ($scope, $window) 
 
   $scope.logout = function () {
     $window.sessionStorage.removeItem("user");
-    $scope.USER.loggedIn = false;
+    $scope.USER = {
+      name: "",
+      password: "",
+      loggedIn: false
+    }
   }
 
   if ($window.sessionStorage.user) {
@@ -214,7 +218,7 @@ $scope.submit = function () {
 
 
   if ($routeParams.id == "new") {
-  $http.post("/api/sword", s).then (function (data) {
+  $http.post("/api/sword", {sword: s, user: $scope.USER}).then (function (data) {
     alert("succes")
     console.log(data)
     $window.location.href = "/";
@@ -224,7 +228,7 @@ $scope.submit = function () {
   })
 } else {
 
-  $http.put("/api/sword/" + $routeParams.id,s).then(function (data) {
+  $http.put("/api/sword/" + $routeParams.id,{sword: s, user: $scope.USER}).then(function (data) {
     alert("succes");
     $window.location.href = "/";
   }, function(err) {
@@ -256,7 +260,7 @@ angular.module("swordView",[]).controller('swordViewController', function($route
   $scope.remove = function (id, name) {
     var x = confirm("do you want to delete: " + name);
     if (x) {
-    $http.delete("/api/sword/" + id).then (function (data) {
+    $http.delete("/api/sword/" + id, {params: $scope.USER}).then (function (data) {
       alert("succes");
       $window.location.href = "/"
     }, function (err) {
@@ -313,7 +317,7 @@ angular.module("newMetal",[]).controller("newMetalController", function ($http, 
   }
 
   $scope.submit = function () {
-    $http.post("/api/metal", {name: $scope.newMetal}
+    $http.post("/api/metal", {name: $scope.newMetal, user: $scope.USER}
     ).then(function (data) {
       alert("success")
       $scope.getMetals();
