@@ -192,22 +192,12 @@ $scope.removeMetal = function (m) {
 }
 
 $scope.submit = function () {
+  console.log($scope.history)
+  console.log($scope.metals)
+  if ($scope.name != ""  && $scope.history != "" && $scope.history != undefined && $scope.metals.length != 0 && ! $scope.length <= 0 && ! $scope.weight <= 0) {
   var sure = confirm("Are you sure?")
   if (sure) {
-  /*
-  console.log($scope.img)
-  var f = document.getElementById('file').files[0],
-       r = new FileReader();
 
-   r.onloadend = function(e) {
-     var data = e.target.result;
-     //send your binary data via $http or $resource or do anything else with it
-     console.log(data)
-   }
-
-
-   r.readAsBinaryString(f);
-   */
   var s = {
     name : $scope.name,
     length : $scope.length,
@@ -218,28 +208,34 @@ $scope.submit = function () {
     metals : $scope.metals
   }
 
+  data = {
+    sword: s,
+     user: $scope.USER
+  }
+
 
   if ($routeParams.id == "new") {
-  $http.post("/api/sword", {sword: s, user: $scope.USER}).then (function (data) {
+  $http.post("/api/sword", data).then (function (data) {
     alert("succes")
-    console.log(data)
     $window.location.href = "/";
   }, function (err) {
-    console.log(err);
     alert("An Error occurred, please try again later.")
   })
 } else {
 
-  $http.put("/api/sword/" + $routeParams.id,{sword: s, user: $scope.USER}).then(function (data) {
+  $http.put("/api/sword/" + $routeParams.id, data).then(function (data) {
     alert("succes");
     $window.location.href = "/";
   }, function(err) {
-    console.log(err);
     alert("Error");
   })
 }
 }
+} else {
+  alert("please fill in all fields")
 }
+}
+
 });
 
 angular.module("swordView",[]).controller('swordViewController', function($routeParams,$scope, $http, $window) {
@@ -266,7 +262,6 @@ angular.module("swordView",[]).controller('swordViewController', function($route
       alert("succes");
       $window.location.href = "/"
     }, function (err) {
-      console.log(err);
       alert("An error occurred")
     })
     }
@@ -282,8 +277,7 @@ angular.module("loginView",[]).controller("loginController", function ($scope, $
     $http.post('/api/admin/login', user).then(function (data) {
 
       if (data.data.succes) {
-      //set user as logged in
-      //and redirect
+
       $window.sessionStorage.setItem("user", JSON.stringify({loggedIn: true, name: user.name, password: data.data.password}))
       $window.location.href = "/";
       console.log("success")

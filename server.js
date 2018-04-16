@@ -60,8 +60,6 @@
       return str.split('').map(translate).join('');
     }
 
-
-
     app.get("/api/sword", function (req, res) {
 
         var q = {
@@ -85,10 +83,9 @@
 
     });
 
-
     app.post("/api/sword", function (req,res) {
       var user = req.body.user;
-      user.password = rot13(password);
+      user.password = rot13(user.password);
       verifyUser(user, function (legit) {
         if (legit) {
           Sword.create(req.body.sword, function(err, result) {
@@ -108,7 +105,7 @@
     app.get("/api/sword/:sword_id", function (req,res) {
       Sword.findOne({_id : req.params.sword_id}, function (err, sword) {
         if (err) {
-        
+
           res.send(err);
         } else {
           res.json(sword);
