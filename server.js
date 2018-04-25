@@ -23,7 +23,7 @@
     app.use(express.static(__dirname + '/public'));                 // set the static files location /public/img will be /img for users
     app.use(morgan('dev'));                                         // log every request to the console
     app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
-    app.use(bodyParser.json());                                     // parse application/json
+    app.use(bodyParser.json({limit: "500mb"}));                                     // parse application/json
     app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
     app.use(methodOverride());
 
@@ -36,6 +36,9 @@
     verifyUser = function (user, callb) {
 
       Admin.findOne({name: user.name}, function (err, adm) {
+        if (adm == undefined || adm == null) {
+          callb(false);
+        } else {
         bcrypt.compare(user.password,adm.password, function (err, res) {
           if (err) {
             console.log(err);
@@ -44,7 +47,9 @@
             callb(res)
           }
         })
+      }
       })
+
     }
 
     function sendErrorResponse (res) {
@@ -60,28 +65,51 @@
       return str.split('').map(translate).join('');
     }
 
+    function isEmptyObject(obj) {
+        return !Object.keys(obj).length;
+      }
+
     app.get("/api/sword", function (req, res) {
+      var q = req.query;
+      console.log(q)
+      s = {};
+      if (q.name) {
+        s.name = {$regex: q.name, $options: "i"};
+      }
+      if (q.mnL && q.mxL) {
+        s.length = {$gte: parseInt(q.mnL), $lte: parseInt(q.mxL)};
+      }
+      if (q.mnW && q.mxW) {
+        s.weight = {$gte : parseInt(q.mnW), $lte: parseInt(q.mxW)};
+      }
+      var skip = 0;
+      if (q.p) {
+        skip = parseInt(q.p) * 10;
+      }
+      console.log(s)
 
-        var q = {
-        //length: {$lt : req.query.mnL , $gt: req.query.mxL},
-        //weight: {$lt : req.query.mnW, $gt: req.query.mxW},
-        name: req.query.name
-        }
-
-        if (req.query.name == undefined) {
-          q = {};
-        }
-
-      Sword.find(q, function (err, swords) {
+      Sword.find(s, function (err, result) {
         if (err) {
           res.send(err);
         } else {
-
-          res.json(swords)
+          res.json(result);
         }
-      })
+      }).limit(10).skip(skip);
+
+
+
 
     });
+
+    app.get("/api/allSwords", function (req, res) {
+      Sword.find({}, function (err, result) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.json(result);
+        }
+      })
+    })
 
     app.post("/api/sword", function (req,res) {
       var user = req.body.user;
@@ -92,7 +120,7 @@
             if (err) {
               res.send(err);
             } else {
-              res.send(result);
+              res.json(result);
             }
           })
         } else {
@@ -209,6 +237,11 @@
         }
     })
 
+  })
+
+  app.post("/api/uploadImg", function (req, res) {
+    console.log(req.body.id)
+    Fs.writeFile(__dirname + "/public/IMG/" + req.body.id + ".png",req.body.imgData)
   })
 
     // application -------------------------------------------------------------

@@ -3,12 +3,6 @@ angular.module('routes', []).config(['$routeProvider', '$locationProvider', func
 $routeProvider
 
     // home page
-    .when('/:name/:mnL/:mxL/:mnW/:mxW', {
-        templateUrl: 'catalog.html',
-        controller: 'mainController'
-    })
-
-    // home page
     .when('/', {
         templateUrl: 'catalog.html',
         controller: 'mainController'

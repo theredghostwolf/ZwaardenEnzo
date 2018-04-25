@@ -36,64 +36,68 @@ if ($window.sessionStorage.user) {
 }
 
 function errorCallback (err) {
-  Console.log("Error: " + err);
+  console.log("Error: " + err);
+  console.log(err);
 }
 
-function findSwords (search, callb) {
-  $http({url: "/api/sword",
-      method: "GET",
-      params: search
-    }).then(callb, errorCallback);
-}
+
 
 $scope.calibrate = function ( ) {
-findSwords({}, function (data) {
+  $http.get("/api/allSwords").then (function (data) {
+    var shortest = 1000;
+    var longest = 0;
 
-  $scope.swords = data.data;
+    var lightest = 1000;
+    var heaviest = 0;
 
-  var shortest = 1000;
-  var longest = 0;
+    for (i =0; i < data.data.length; i++) {
+        s = data.data[i];
+        if (s.length > longest) {
+          longest = s.length;
+        }
+        if (s.length < shortest) {
+          shortest = s.length;
+        }
 
-  var lightest = 1000;
-  var heaviest = 0;
-
-  for (i =0; i < data.data.length; i++) {
-      s = data.data[i];
-      if (s.length > longest) {
-        longest = s.length;
-      }
-      if (s.length < shortest) {
-        shortest = s.length;
-      }
-
-      if (s.weight > heaviest) {
-        heaviest = s.weight;
-      }
-      if (s.weight < lightest) {
-        lightest = s.weight;
-      }
-  }
+        if (s.weight > heaviest) {
+          heaviest = s.weight;
+        }
+        if (s.weight < lightest) {
+          lightest = s.weight;
+        }
+    }
 
 
-  $scope.heaviest = heaviest;
-  $scope.longest = longest;
-  $scope.lightest = lightest;
-  $scope.shortest = shortest;
 
-  $scope.selectedMinLength = shortest;
-  $scope.selectedMinWeight = lightest;
+    $scope.heaviest = heaviest;
+    $scope.longest = longest;
+    $scope.lightest = lightest;
+    $scope.shortest = shortest;
+
+    $scope.selectedMinLength = shortest;
+    $scope.selectedMinWeight = lightest;
 
 
-  $scope.selectedMaxLength = longest;
+    $scope.selectedMaxLength = longest;
+    $scope.selectedMaxWeight = heaviest;
 
-  $scope.selectedMaxWeight = heaviest;
+    if ($routeParams.name) {
+      $scope.selectedName = $routeParams.name;
+    }
+    if ($routeParams.mnL) {
+      $scope.selectedMinLength = parseInt($routeParams.mnL);
+    }
+    if ($routeParams.mxL) {
+      $scope.selectedMaxLength = parseInt($routeParams.mxL);
+    }
+    if ($routeParams.mnW) {
+      $scope.selectedMinWeight = parseInt($routeParams.mnW);
+    }
+    if ($routeParams.mxW) {
+      $scope.selectedMaxWeight = parseInt($routeParams.mxW);
+    }
 
-  if ($routeParams != {}) {
-  findSwords($routeParams, function (data) {
-    $scope.swords = data.data;
-    })
-  }
-});
+  }, errorCallback)
 }
 
 $http.get("/api/metal").then(function (data) {
@@ -102,7 +106,34 @@ $http.get("/api/metal").then(function (data) {
 
 $scope.calibrate();
 
+$scope.search  = function () {
+  var ref = "/?";
+  if ($scope.selectedName != "" && $scope.selectedName != undefined) {
+    ref += "name=" + $scope.selectedName;
+  }
+  ref += "&mnL=" + $scope.selectedMinLength + "&mxL=" + $scope.selectedMaxLength;
+  ref += "&mnW=" + $scope.selectedMinWeight + "&mxW=" + $scope.selectedMaxWeight;
 
+  $window.location.href  = ref;
+}
+
+
+
+$http({
+  method: "get",
+  url: "/api/sword",
+  params: $routeParams
+}).then(function (data) {
+  console.log(data);
+  $scope.swords = data.data;
+  $scope.amountOfSwords = data.data.length;
+  $scope.pages = data.data.length / 10;
+  if ($routeParams.p) {
+    $scope.page = $routeParams.p;
+  } else {
+    $scope.page = 1;
+  }
+}, errorCallback);
 });
 
 angular.module("adm",[]).controller('adminController', function($routeParams, $scope, $http, $window) {
@@ -192,11 +223,12 @@ $scope.removeMetal = function (m) {
 }
 
 $scope.submit = function () {
-  console.log($scope.history)
-  console.log($scope.metals)
+
   if ($scope.name != ""  && $scope.history != "" && $scope.history != undefined && $scope.metals.length != 0 && ! $scope.length <= 0 && ! $scope.weight <= 0) {
   var sure = confirm("Are you sure?")
   if (sure) {
+
+
 
   var s = {
     name : $scope.name,
@@ -215,7 +247,32 @@ $scope.submit = function () {
 
 
   if ($routeParams.id == "new") {
-  $http.post("/api/sword", data).then (function (data) {
+  $http.post("/api/sword", data).then (function (rdata) {
+    var f = document.getElementById('file').files[0],
+    r = new FileReader();
+
+    r.onloadend = function(e) {
+      var idata = e.target.result;
+      //send your binary data via $http or $resource or do anything else with it
+      console.log(rdata);
+      d = {
+        imgData: idata,
+        id: rdata.data._id
+      }
+      $http.post("/api/uploadImg",d).then (function (res) {
+        console.log(success);
+      }, function (err) {
+        console.log(err);
+      })
+    }
+
+    if (f != undefined) {
+      r.readAsBinaryString(f);
+    }
+
+
+
+
     alert("succes")
     $window.location.href = "/";
   }, function (err) {
@@ -313,6 +370,7 @@ angular.module("newMetal",[]).controller("newMetalController", function ($http, 
   }
 
   $scope.submit = function () {
+    if ($scope.newMetal != "") {
     $http.post("/api/metal", {name: $scope.newMetal, user: $scope.USER}
     ).then(function (data) {
       alert("success")
@@ -321,6 +379,7 @@ angular.module("newMetal",[]).controller("newMetalController", function ($http, 
       console.log(err)
       alert("an error occured")
     })
+    }
   }
 
   $scope.removeMetal = function (id) {

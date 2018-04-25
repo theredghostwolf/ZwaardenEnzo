@@ -1,7 +1,7 @@
 <div class="row catalog">
   <div class="col-md-2 nav">
     <div class="range">
-      <input type="text" name="name" ng-model="selectedName" class="textinput" placeholder="name">
+      <input type="text" name="name" ng-model="selectedName" class="textinput" placeholder="Name">
     </div>
     <div class="">
       <input type="range" name="minL" ng-model="selectedMinLength" min={{shortest}} max={{longest}} step=1>
@@ -21,7 +21,7 @@
       <input type="checkbox" name="name" value="">  {{metal.name}}
     </div>
     <div class="range">
-      <a href="/{{selectedName}}/{{selectedMinLength}}/{{selectedMaxLength}}/{{selectedMinWeight}}/{{selectedMaxWeight}}"><button type="button" name="button" class="btn btn-dark" >search</button></a>
+      <button type="button" name="button" class="btn btn-dark" ng-click="search()" >search</button>
     </div>
   </div>
   <div class="col-md-10 content">
