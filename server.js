@@ -7,6 +7,7 @@
 
     // set up ========================
     var express  = require('express');
+    var multer = require("multer");
     var app      = express();                               // create our app w/ express
     var mongoose = require('mongoose');                     // mongoose for mongodb
     var morgan = require('morgan');             // log requests to the console (express4)
@@ -82,11 +83,11 @@
       if (q.mnW && q.mxW) {
         s.weight = {$gte : parseInt(q.mnW), $lte: parseInt(q.mxW)};
       }
-      var skip = 0;
+      skip = 0;
       if (q.p) {
-        skip = parseInt(q.p) * 10;
+       var skip = parseInt(q.p) * 10;
       }
-      console.log(s)
+
 
       Sword.find(s, function (err, result) {
         if (err) {
@@ -94,7 +95,7 @@
         } else {
           res.json(result);
         }
-      }).limit(10).skip(skip);
+      }).limit(10).skip(10)
 
 
 
@@ -240,8 +241,8 @@
   })
 
   app.post("/api/uploadImg", function (req, res) {
-    console.log(req.body.id)
-    Fs.writeFile(__dirname + "/public/IMG/" + req.body.id + ".png",req.body.imgData)
+    console.log(req.body)
+    Fs.writeFile(__dirname + "/public/IMG/" + req.body.id + ".png", new Buffer(req.body.imgData))
   })
 
     // application -------------------------------------------------------------

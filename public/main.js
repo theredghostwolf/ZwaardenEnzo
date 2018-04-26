@@ -259,6 +259,7 @@ $scope.submit = function () {
         imgData: idata,
         id: rdata.data._id
       }
+      console.log(d)
       $http.post("/api/uploadImg",d).then (function (res) {
         console.log(success);
       }, function (err) {

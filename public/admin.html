@@ -11,11 +11,12 @@
       <input type="number" name="name" ng-model="weight" placeholder="Weight" step="0.1">
     </div>
 
-
+    <!--
     <div class="">
       Upload Image: <input type="file" id="file" ng-model="file" accept=".png">
     </div>
-
+    -->
+    
     <div class="">
       <input type="text" name="name" ng-model="imgLink" placeholder="External IMG link">
     </div>
@@ -25,8 +26,10 @@
         <option ng-repeat="m in dataMetals" value="{{m.name}}">{{m.name}}</option>
       </select>
       <button type="button" name="button" class="btn btn-dark" ng-click="addMetal()">add</button>
-      <div class="" ng-repeat="m in metals">
-        {{m}} <button type="button" name="button" class="btn btn-dark" ng-click="removeMetal(m)">remove</button>
+      <div class="" >
+        <ul>
+          <li ng-repeat="m in metals"> {{m}} <button type="button" name="button" class="btn btn-dark" ng-click="removeMetal(m)">remove</button></li>
+        </ul>
       </div>
     </div>
   </div>
